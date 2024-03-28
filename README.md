@@ -1,2 +1,3 @@
-# shok_mobile
- hi hammad here
+# Shok Mobiles
+
+Software Engineering Project
