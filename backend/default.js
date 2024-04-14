@@ -10,7 +10,7 @@ const DefaultData = async() => {
         await Product.insertMany(products)
         console.log("Default data added successfully")
     }catch(error){
-        console.log("Error in default data: ", error.message)
+        console.log("Error in inserting default data: ", error.message)
     }
     
 }

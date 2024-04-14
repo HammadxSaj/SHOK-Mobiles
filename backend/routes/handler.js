@@ -3,7 +3,7 @@ const { exec } = require('child_process');
 const router = express.Router();
 const Product = require('../model/product-schema.js');
 
-let scrapedData = []; // Store multiple product data in an array
+// let scrapedData = []; // Store multiple product data in an array
 
 function executePythonScript() {
   exec('python scrap.py');
@@ -21,20 +21,36 @@ function executePythonScript() {
 }
 executePythonScript();
 
-// router.post('/data', (req, res) => {
-//   const { name, price, image, url, store } = req.body;
-//   const newData = {
-//     name,
-//     price,
-//     image,
-//     url,
-//     store,
-//   };
-//   scrapedData.push(newData); // Push new data to the array
-//   console.log('Received Name:', name);
-//   console.log('Received Price:', price);
-//   res.status(200).send('Data received successfully');
-// });
+router.post('/data', async(req, res) => {
+
+  try {
+    const { name, price, image, url, store } = req.body;
+    const newData = {
+      name,
+      price,
+      image,
+      url,
+      store,
+    };
+
+    // Perform asynchronous operation, e.g., database insertion
+    await Product.create(newData);
+
+    console.log("Data inserted successfully");
+    res.status(200).send('Data received and inserted successfully');
+  } catch (error) {
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.url) {
+      // Handle duplicate key error
+      console.log(`Duplicate key error for URL: `);
+      // Skip the duplicate entry by returning early
+      return res.status(200).send('Duplicate entry skipped');
+    } else {
+      // Handle other errors
+      console.log("Error in inserting data: ", error.message);
+      res.status(500).json({ message: error.message });
+    }
+  }
+});
 
 router.get('/result', async(req, res) => {
   try{
