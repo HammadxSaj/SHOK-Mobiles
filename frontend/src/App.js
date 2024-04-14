@@ -41,7 +41,7 @@ const Home = () => {
         onChange={handleInputChange}
       />
       <div className="search-box">
-        <button className="btn-search"><i className="fas fa-search"></i></button>  
+        <button type="button" onClick={handleSearch}>🔍</button> 
       </div>
     </div>
   );
