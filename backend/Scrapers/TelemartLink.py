@@ -15,7 +15,7 @@ def generateList():
     driver.get("https://www.telemart.pk/mobile-and-tablets/mobile-phone.html")
     driver.maximize_window()
     time.sleep(5)
-    # finding <a data-v-162ca7e6="" class="pagination cursor-pointer mx-1 font-bold hover:text-white rounded-full p-1 px-2">4</a>
+
     pl = driver.find_elements('css selector', "a[class='pagination cursor-pointer mx-1 font-bold hover:text-white rounded-full p-1 px-2']")
     pl.remove(pl[0])
     pl.remove(pl[-1])
@@ -24,7 +24,6 @@ def generateList():
     try:
         p.click()
     except Exception as e:
-        # Use JavaScript to click the element if normal click doesn't work
         driver.execute_script("arguments[0].click();", p)
     time.sleep(5)
     t = driver.find_elements('css selector', 'div[class="col-span-3 bg-white relative cursor-pointer p-0.5"]')
@@ -37,7 +36,6 @@ def generateList():
         try:
             p.click()
         except Exception as e:
-            # Use JavaScript to click the element if normal click doesn't work
             driver.execute_script("arguments[0].click();", p)
         time.sleep(5)
         t = driver.find_elements('css selector', 'div[class="col-span-3 bg-white relative cursor-pointer p-0.5"]')
