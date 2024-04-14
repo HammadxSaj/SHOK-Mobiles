@@ -22,6 +22,8 @@ def dataSend(n,p,i,u,s):
         "store": product_store
     }
 
+    # print(json.dumps(data, indent=4))
+
     response = requests.post(url, json=data)
 
     if response.status_code == 200:
@@ -50,8 +52,8 @@ def main():
                 
                 if product_name:
                     if product_price:
-                        print("Product Price:", product_price)
-                        print("Product Name:", product_name)
+                        # print("Product Price:", product_price)
+                        # print("Product Name:", product_name)
                         dataSend(product_name,product_price, product_image, url, "Telemart")
                 else:
                     print("not found in JSON data.")
