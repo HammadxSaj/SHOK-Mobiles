@@ -7,6 +7,8 @@ import Item from './Item';
 import item1Image from './fig1.jpeg';
 import item2Image from './fig2.jpeg';
 import item3Image from './fig3.jpeg';
+import titleImage from './SHOK.png';
+import mainpage from './mainpage.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -28,48 +30,46 @@ const Home = () => {
     { id: 3, image: item3Image, title: 'Item 3', description: 'Explore the third featured item here.' },
   ];
 
+  
   return (
-    <div>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="What are you shopping for today?"
-          value={searchQuery}
-          onChange={handleInputChange}
-        />
-        <button type="button" onClick={handleSearch}>🔍</button>
+    <div className="search-container">
+      <img src={titleImage} alt="SHOK Mobile" className="title" />
+      <input
+        type="text"
+        placeholder="Search for items (i.e iPhone, Samsung, etc.)"
+        value={searchQuery}
+        onChange={handleInputChange}
+      />
+      <div className="search-box">
+        <button className="btn-search"><i className="fas fa-search"></i></button>  
       </div>
     </div>
   );
 };
 
-const Categories = () => (
-  <div></div>
-);
-
 const App = () => {
-  return (
+  return (  
     <Router>
       <div className="shop-seeker">
         <header className="header">
-          <div className="brand">Shok Mobiles</div>
+          <div className="brand">SHOK Mobile</div>
           <nav>
             <ul className="nav-links">
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/categories">Categories</Link></li>
+              {/* <li><Link to="/categories">Categories</Link></li> */}
             </ul>
           </nav>
         </header>
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/categories" element={<Categories />} />
+            {/* <Route path="/categories" element={<Categories />} /> */}
             <Route path="/search-result/:query" element={<SearchResult />} />
             <Route path="/item/:id" element={<Item />} />
           </Routes>
         </main>
         <footer className="footer">
-          Copyrights shopseeker.com
+          Copyrights SHOKMobile.com
         </footer>
       </div>
     </Router>
