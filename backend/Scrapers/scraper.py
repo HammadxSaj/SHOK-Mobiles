@@ -1,10 +1,10 @@
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
+from TelemartLink import generateList
 import json
 import requests
 
-urlLst = ["https://www.telemart.pk/samsung-galaxy-s23fe-8gb256gb-with-official-warranty-with-free-galaxy-buds-2","https://www.telemart.pk/samsung-galaxy-s23-ultra","https://www.telemart.pk/samsung-galaxy-a14-6gb128gb-dual-sim-with-official-warranty","https://www.telemart.pk/samsung-galaxy-a54-5g-8gb256gb-dual-sim-with-official-warranty","https://www.telemart.pk/samsung-galaxy-a14-4gb128gb-dual-sim-with-official-warranty"]
-
+urlLst = generateList()
 def dataSend(n,p,i,u,s):
     product_name = n
     product_price = p
