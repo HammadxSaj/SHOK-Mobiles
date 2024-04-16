@@ -117,3 +117,28 @@ h2 {
   margin-bottom: 10px;
   color: #333333;
 }
+
+.price-slider {
+  position: absolute; /* or relative, fixed, etc., depending on your layout */
+  top: 200px; /* Adjust the distance from the top */
+  left: 50%; /* Adjust the distance from the left */
+  transform: translateX(-50%); /* Center the slider horizontally */
+  z-index: 999; /* Ensure the slider is on top of other elements */
+}
+
+.rc-slider-track {
+  background-color: rgb(6, 6, 131) !important; /* Color of the slider track */
+}
+
+.rc-slider-handle {
+  border-color: rgb(0, 0, 0) !important; /* Color of the slider handle */
+  background-color: rgb(255, 255, 255) !important; /* Background color of the slider handle */
+}
+
+.rc-slider-mark-text-active {
+  color: rgb(0, 0, 0) 
+}
+
+.rc-slider-mark-text {
+  color: rgb(0, 0, 0) 
+}

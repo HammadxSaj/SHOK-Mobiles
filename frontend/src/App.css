@@ -4,22 +4,22 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #262626;
+  background-color: #fffefe;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 1em;
-  background-color: #460d40;
+  padding: 1.5em;
+  background-color: #2d2a5e;
 }
 
 
 .brand {
-  font-size: 1.5em;
+  font-size: 2em;
   font-weight: bold;
   color: rgb(241, 238, 238);
-  text-shadow: 2px 2px 4px #000000;
+  text-shadow: 2px 2px 4px #16ddf3;
   /*add animation when hovered*/
   transition: transform 0.5s;
   &:hover {
@@ -32,6 +32,7 @@
   list-style: none;
   display: flex;
   gap: 1em;
+  font-size: 1.5em;
   transition: transform 0.5s;
   &:hover {
     transform: scale(1.1);
@@ -55,7 +56,7 @@
   max-width: 1000px;
   justify-content: center;
   padding: 7em;
-  background-color: #262626;
+  background-color: #fffefe;
   min-height: 20vh;
 }
 
@@ -84,10 +85,10 @@
 
 /*align the button to the input field*/
 .search-container button {
-  padding: 0.5em;
+  padding: 0.8em;
   border: none;
-  border-radius: 5px;
-  background-color: #004fe1;
+  border-radius: 10px;
+  background-color: #014bd5;
   color: rgb(167, 45, 45);
   cursor: pointer;
   transition: transform 0.5s;
@@ -177,4 +178,30 @@
   padding-bottom: 60px; /* Adjust this value based on your footer height */
   overflow-y: auto;
  
+}
+
+.pric-slider {
+  position: absolute; /* or relative, fixed, etc., depending on your layout */
+  top: 530px; /* Adjust the distance from the top */
+  left: 65%; /* Adjust the distance from the left */
+  transform: translateX(-50%); /* Center the slider horizontally */
+  z-index: 999; /* Ensure the slider is on top of other elements */
+}
+
+
+.rc-slider-track {
+  background-color: rgb(6, 6, 131) !important; /* Color of the slider track */
+}
+
+.rc-slider-handle {
+  border-color: rgb(0, 0, 0) !important; /* Color of the slider handle */
+  background-color: rgb(255, 255, 255) !important; /* Background color of the slider handle */
+}
+
+.rc-slider-mark-text-active {
+  color: rgb(0, 0, 0) 
+}
+
+.rc-slider-mark-text {
+  color: rgb(0, 0, 0) 
 }

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import 'rc-slider/assets/index.css';
+import Slider from 'rc-slider';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import SearchResult from './SearchResult';
-import Item from './Item';
-
-import item1Image from './fig1.jpeg';
-import item2Image from './fig2.jpeg';
-import item3Image from './fig3.jpeg';
-import titleImage from './SHOK.png';
-import mainpage from './mainpage.png';
+// import Item from './Item';
+import titleImage from './front.png';
 
 const Home = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [priceRange, setPriceRange] = useState([0, 500000]); // Initial price range
 
   const handleSearch = () => {
     if (searchQuery.trim() !== '') {
@@ -24,13 +23,31 @@ const Home = () => {
     setSearchQuery(e.target.value);
   };
 
-  const featuredItems = [
-    { id: 1, image: item1Image, title: 'Item 1', description: 'This is the first featured item.' },
-    { id: 2, image: item2Image, title: 'Item 2', description: 'Check out the details of the second featured item.' },
-    { id: 3, image: item3Image, title: 'Item 3', description: 'Explore the third featured item here.' },
-  ];
+  const handlePriceChange = (value) => {
+    console.log("Selected Price Range:", value);
+    setPriceRange(value);
+  };
 
-  
+  const handleSearchByPrice = () => {
+    axios.get('/api/search', {
+      params: {
+        minPrice: priceRange[0],
+        maxPrice: priceRange[1]
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  };
+
+  const handleCombinedSearch = () => {
+    handleSearch();
+    handleSearchByPrice();
+  };
+
   return (
     <div className="search-container">
       <img src={titleImage} alt="SHOK Mobile" className="title" />
@@ -40,8 +57,19 @@ const Home = () => {
         value={searchQuery}
         onChange={handleInputChange}
       />
+      <div className="pric-slider">
+        <Slider
+          min={0}
+          max={500000}
+          defaultValue={priceRange}
+          steps = {100}
+          onChange={handlePriceChange}
+          range
+        />
+        <span>Price Range: Rs{priceRange[0]} - Rs{priceRange[1]}</span>
+      </div>
       <div className="search-box">
-        <button type="button" onClick={handleSearch}>🔍</button> 
+        <button type="button" onClick={handleCombinedSearch}>🔍</button> 
       </div>
     </div>
   );
@@ -65,7 +93,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             {/* <Route path="/categories" element={<Categories />} /> */}
             <Route path="/search-result/:query" element={<SearchResult />} />
-            <Route path="/item/:id" element={<Item />} />
+            {/* <Route path="/item/:id" element={<Item />} /> */}                   /*no apparent need*/
           </Routes>
         </main>
         <footer className="footer">

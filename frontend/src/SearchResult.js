@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './SearchResult.css';
+import 'rc-slider/assets/index.css';
+import Slider from 'rc-slider';
 import { useLocation } from 'react-router-dom';
 
 function SearchResult() {
@@ -10,6 +12,8 @@ function SearchResult() {
   const location = useLocation();
   const [lowestPrice, setLowestPrice] = useState(null);
   const [averagePrice, setAveragePrice] = useState(null);
+  const [priceRange, setPriceRange] = useState([0, 500000]); 
+
 
   useEffect(() => {
     const searchQuery = decodeURIComponent(location.pathname.split('/').pop());
@@ -82,7 +86,7 @@ function SearchResult() {
         const sum = validPrices.reduce((total, currVal) => total + currVal, 0);
         const average = sum / validPrices.length;
         setAveragePrice(average.toFixed(2));
-      } else {
+      } else { 
         setLowestPrice(null);
         setAveragePrice(null);
       }
@@ -92,6 +96,9 @@ function SearchResult() {
     }
   };
 
+  const handlePriceChange = (value) => {
+    setPriceRange(value);
+  };
 
   return (
     <div className="search-result">
@@ -106,6 +113,19 @@ function SearchResult() {
           Search
         </button>
       </div>
+      <div className="price-slider">
+        <Slider
+          min={0}
+          max={500000}
+          range
+          defaultValue={[0, 500000]}
+          value={priceRange}
+          onChange={handlePriceChange}
+        />
+        <div className="price-range">
+          Price Range: Rs{priceRange[0]} - Rs{priceRange[1]}
+        </div>
+        </div>
       <div className="price-info">
         <div className="price-section">
           <span>Average price: {averagePrice ? `Rs. ${Number(averagePrice).toLocaleString()}` : 'TBD'}</span>
