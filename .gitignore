@@ -2,3 +2,5 @@
 /node_modules
 /backend/node_modules
 /backend/node_modules
+/frontend/node_modules
+backend/Scrapers/__pycache__/TelemartLink.cpython-311.pyc
