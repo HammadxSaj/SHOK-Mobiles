@@ -3,16 +3,17 @@ import './SearchResult.css';
 import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 function SearchResult() {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState('');
-  const [filteredItems, setFilteredItems] = useState([]);
+  // const [items, setFilteredItems] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const location = useLocation();
   const [lowestPrice, setLowestPrice] = useState(null);
   const [averagePrice, setAveragePrice] = useState(null);
-  const [priceRange, setPriceRange] = useState([0, 500000]); 
+  const [priceRange, setPriceRange] = useState([0, 1000000]); 
 
 
   useEffect(() => {
@@ -26,23 +27,34 @@ function SearchResult() {
 
   useEffect(() => {
     calculatePrices();
-  }, [filteredItems]);
+  }, [items]);
 
   const fetchItems = async (searchQuery) => {
     try {
-      const data = await fetch(`/result?query=${searchQuery}`);
-      const items = await data.json();
+      // const data = await fetch(`/result?query=${searchQuery}`);
+      // const items = await data.json();
+
+      const response = await axios.get('/result', {
+          params: {
+            minPrice: priceRange[0],
+            maxPrice: priceRange[1],
+            query: searchQuery
+          }
+        });
+
+        const items =  response.data;
+        console.log('Items:', items);
 
       // Convert item prices to strings before setting them in the state
-      const itemsWithStringPrices = items.map((item) => {
+      const itemsWithStringPrices = items.map((items) => {
         return {
-          ...item,
-          price: String(item.price), // Convert price to string
+          ...items,
+          price: String(items.price), // Convert price to string
         };
       });
 
       setItems(itemsWithStringPrices);
-      filterItems(searchQuery);
+      // filterItems(searchQuery);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -50,25 +62,20 @@ function SearchResult() {
   const handleSearch = () => {
     const searchQuery = search.trim();
     if (searchQuery !== '') {
-      filterItems(searchQuery);
+      fetchItems(searchQuery);
+      // setItems(items);
       setSearchPerformed(true);
     } else {
-      setFilteredItems(items); // Set filteredItems to all items if search is empty
+      // setFilteredItems(items); // Set items to all items if search is empty
       setSearchPerformed(false);
     }
   };
 
-  const filterItems = (searchQuery) => {
-    const filtered = items.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredItems(filtered);
-  };
 
   const calculatePrices = () => {
-    if (filteredItems.length > 0) {
-      const prices = filteredItems.map((item) => {
-        let priceWithoutCurrency = item.price.replace('Rs.', '').trim(); 
+    if (items.length > 0) {
+      const prices = items.map((items) => {
+        let priceWithoutCurrency = items.price.replace('Rs.', '').trim(); 
         priceWithoutCurrency = priceWithoutCurrency.replace(/,/g, ''); 
 
         if (!isNaN(parseFloat(priceWithoutCurrency))) {
@@ -99,6 +106,7 @@ function SearchResult() {
   const handlePriceChange = (value) => {
     setPriceRange(value);
   };
+  
 
   return (
     <div className="search-result">
@@ -116,9 +124,9 @@ function SearchResult() {
       <div className="price-slider">
         <Slider
           min={0}
-          max={500000}
+          max={1000000}
           range
-          defaultValue={[0, 500000]}
+          defaultValue={[0, 1000000]}
           value={priceRange}
           onChange={handlePriceChange}
         />
@@ -138,23 +146,23 @@ function SearchResult() {
       <section className="listings">
         <h2>
           {searchPerformed
-            ? `Found ${filteredItems.length} listings`
+            ? `Found ${items.length} listings`
             : 'All Listings'}
         </h2>
         <div className="listings-container">
-          {filteredItems.map((item) => (
+          {items.map((items) => (
             <a
-              key={item.id}
+              key={items.id}
               className="listing"
-              href={item.url}
+              href={items.url}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={item.image} alt={item.name} className="item-image" />
+              <img src={items.image} alt={items.name} className="item-image" />
               <div className="listing-details">
-                <h2 className="card-title">{item.name}</h2>
-                <p className="card-text">Price: {`Rs. ${Number(item.price).toLocaleString()}`}</p>
-                <p className="card-text">Store: {item.store}</p>
+                <h2 className="card-title">{items.name}</h2>
+                <p className="card-text">Price: {`Rs. ${Number(items.price).toLocaleString()}`}</p>
+                <p className="card-text">Store: {items.store}</p>
               </div>
             </a>
           ))}

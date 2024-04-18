@@ -52,17 +52,62 @@ router.post('/data', async(req, res) => {
   }
 });
 
-router.get('/result', async(req, res) => {
-  try{
-    const products = await Product.find({});
-    console.log('Products found:', products);
-    res.status(200).json(products)
-    console.log('Data sent to front end successfully')
-  }catch(error){
-    res.status(500).json({message: error.message})
-    console.log('Data nooooooooot sent to front end successfully')
+// router.get('/result', async(req, res) => {
+//   try{
+//     const products = await Product.find({});
+//     console.log('Products found from database:', products);
+//     res.status(200).json(products)
+//     console.log('Data sent to front end successfully')
+//   }catch(error){
+//     res.status(500).json({message: error.message})
+//     console.log('Data nooooooooot sent to front end successfully')
+//   }
+//   // res.json(scrapedData); // Return all scraped data as JSON
+// });
+
+// router.get('/result', async (req, res) => {
+//   const minPrice = parseInt(req.query.minPrice ?? 0);
+//   const maxPrice = parseInt(req.query.maxPrice ?? 100000);
+
+//   try {
+//     const products = await Product.find({
+//       price: { $gte: minPrice, $lte: maxPrice }
+//     });
+
+//     console.log('Products found from database:', products);
+//     console.log("Min Price:", minPrice);
+//     console.log("Max Price:", maxPrice);
+//     res.status(200).json(products);
+//     console.log('Data sent to front end successfully');
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//     console.log('Data not sent to front end successfully');
+//   }
+// });
+
+router.get('/result', async (req, res) => {
+  const minPrice = parseInt(req.query.minPrice ?? 0);
+  const maxPrice = parseInt(req.query.maxPrice ?? 100000);
+  const searchQuery = req.query.query; // Extract search query from request query params
+
+  try {
+    let query = { price: { $gte: minPrice, $lte: maxPrice } };
+
+    // If searchQuery is provided, add it to the query to filter by name
+    if (searchQuery) {
+      query.name = { $regex: new RegExp(searchQuery, 'i') }; // Case-insensitive regex search for name
+    }
+    const products = await Product.find(query).sort({ price: 1 });
+
+    console.log('Products found from database:', products);
+    console.log("Min Price:", minPrice);
+    console.log("Max Price:", maxPrice);
+    res.status(200).json(products);
+    console.log('Data sent to front end successfully');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log('Data not sent to front end successfully');
   }
-  // res.json(scrapedData); // Return all scraped data as JSON
 });
 
 module.exports = router;

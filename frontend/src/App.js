@@ -11,13 +11,24 @@ import titleImage from './front.png';
 const Home = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 500000]); // Initial price range
+  const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial price range
 
   const handleSearch = () => {
     if (searchQuery.trim() !== '') {
       navigate(`/search-result/${encodeURIComponent(searchQuery)}`);
     }
   };
+
+  // const handleSearch = () => {
+  //   if (searchQuery.trim() !== '') {
+  //     const queryParams = new URLSearchParams({
+  //       minPrice: priceRange[0],
+  //       maxPrice: priceRange[1]
+  //     });
+  //     navigate(`/search-result/${encodeURIComponent(searchQuery)}&${queryParams.toString()}`);
+  //   }
+  // };
+  
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
@@ -28,24 +39,32 @@ const Home = () => {
     setPriceRange(value);
   };
 
-  const handleSearchByPrice = () => {
-    axios.get('/api/search', {
-      params: {
-        minPrice: priceRange[0],
-        maxPrice: priceRange[1]
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-  };
+  // const handleSearchByPrice = () => {
+
+  //   const minPrice = priceRange[0];
+  // const maxPrice = priceRange[1];
+  
+  // console.log("Minimum Price:", minPrice);
+  // console.log("Maximum Price:", maxPrice);
+
+  //   axios.get('/api/search', {
+  //     params: {
+  //       minPrice: minPrice,
+  //       maxPrice: maxPrice
+  //     }
+  //   })
+  //   .then(response => {
+  //     console.log(response.data);
+  //     console.log();
+  //   })
+  //   .catch(error => {
+  //     console.error('Error fetching data:', error);
+  //   });
+  // };
 
   const handleCombinedSearch = () => {
     handleSearch();
-    handleSearchByPrice();
+    // handleSearchByPrice();
   };
 
   return (
@@ -57,17 +76,17 @@ const Home = () => {
         value={searchQuery}
         onChange={handleInputChange}
       />
-      <div className="pric-slider">
+      {/* <div className="pric-slider">
         <Slider
           min={0}
-          max={500000}
+          max={1000000}
           defaultValue={priceRange}
           steps = {100}
           onChange={handlePriceChange}
           range
         />
         <span>Price Range: Rs{priceRange[0]} - Rs{priceRange[1]}</span>
-      </div>
+      </div> */}
       <div className="search-box">
         <button type="button" onClick={handleCombinedSearch}>🔍</button> 
       </div>
