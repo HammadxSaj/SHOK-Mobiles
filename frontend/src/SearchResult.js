@@ -66,7 +66,8 @@ function SearchResult() {
       // setItems(items);
       setSearchPerformed(true);
     } else {
-      // setFilteredItems(items); // Set items to all items if search is empty
+      // setFilteredItems(items);
+      fetchItems(''); // Set items to all items if search is empty
       setSearchPerformed(false);
     }
   };
