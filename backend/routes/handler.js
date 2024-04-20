@@ -6,8 +6,8 @@ const Product = require('../model/product-schema.js');
 // let scrapedData = []; // Store multiple product data in an array
 
 function executePythonScript() {
-  exec('python scrap.py');
-  exec('python Scrapers\\scraper.py', (error, stdout, stderr) => {
+  exec('python Scrapers\\DarazScraper.py');
+  exec('python Scrapers\\TelemartScraper.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);
       return;
