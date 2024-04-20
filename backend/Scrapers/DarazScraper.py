@@ -63,7 +63,7 @@ def main():
                                 product_img = script_content[img_start:img_end]
                                 print("Product Price:", product_price)
                                 print("Product Name:", product_name)
-                                # dataSend(product_name, product_price, product_img, url, "Daraz")
+                                dataSend(product_name, product_price, product_img, url, "Daraz")
                         else:
                             print("Product name not found in the script content.")
                     else:

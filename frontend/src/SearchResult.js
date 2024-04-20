@@ -11,9 +11,11 @@ function SearchResult() {
   // const [items, setFilteredItems] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const location = useLocation();
-  const [lowestPrice, setLowestPrice] = useState(null);
+  // const [lowestPrice, setLowestPrice] = useState(null);
   const [averagePrice, setAveragePrice] = useState(null);
   const [priceRange, setPriceRange] = useState([0, 1000000]); 
+  const [sortOrder, setSortOrder] = useState('asc');
+
 
 
   useEffect(() => {
@@ -88,18 +90,20 @@ function SearchResult() {
       const validPrices = prices.filter(price => price !== 0); // Remove invalid prices (zeroes)
 
       if (validPrices.length > 0) {
-        const lowest = Math.min(...validPrices);
-        setLowestPrice(lowest.toFixed(2));
+        // const lowest = Math.min(...validPrices);
+        
 
         const sum = validPrices.reduce((total, currVal) => total + currVal, 0);
         const average = sum / validPrices.length;
+
+        // setLowestPrice(average.toFixed(2));
         setAveragePrice(average.toFixed(2));
       } else { 
-        setLowestPrice(null);
+        // setLowestPrice(null);
         setAveragePrice(null);
       }
     } else {
-      setLowestPrice(null);
+      // setLowestPrice(null);
       setAveragePrice(null);
     }
   };
@@ -107,6 +111,21 @@ function SearchResult() {
   const handlePriceChange = (value) => {
     setPriceRange(value);
   };
+
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
+  const sortedItems = [...items].sort((a, b) => {
+    const priceA = parseFloat(a.price.replace('Rs.', '').replace(/,/g, ''));
+    const priceB = parseFloat(b.price.replace('Rs.', '').replace(/,/g, ''));
+    if (sortOrder === 'asc') {
+      return priceA - priceB;
+    } else {
+      return priceB - priceA;
+    }
+  });
+
   
 
   return (
@@ -136,34 +155,37 @@ function SearchResult() {
         </div>
         </div>
       <div className="price-info">
-        <div className="price-section">
+
+      <div className="price-section">
           <span>Average price: {averagePrice ? `Rs. ${Number(averagePrice).toLocaleString()}` : 'TBD'}</span>
         </div>
-        <div className="price-section">
-          <span>Lowest price: {lowestPrice ? `Rs. ${Number(lowestPrice).toLocaleString()}` : 'TBD'}</span>
+        <div className="sort-order">
+          <button onClick={toggleSortOrder}>
+            {sortOrder === 'asc' ? 'Sort High to Low' : 'Sort Low to High'}
+          </button>
         </div>
       </div>
 
       <section className="listings">
         <h2>
           {searchPerformed
-            ? `Found ${items.length} listings`
+            ? `Found ${sortedItems.length} listings`
             : 'All Listings'}
         </h2>
         <div className="listings-container">
-          {items.map((items) => (
+          {sortedItems.map((item) => (
             <a
-              key={items.id}
+              key={item.id}
               className="listing"
-              href={items.url}
+              href={item.url}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={items.image} alt={items.name} className="item-image" />
+              <img src={item.image} alt={item.name} className="item-image" />
               <div className="listing-details">
-                <h2 className="card-title">{items.name}</h2>
-                <p className="card-text">Price: {`Rs. ${Number(items.price).toLocaleString()}`}</p>
-                <p className="card-text">Store: {items.store}</p>
+                <h2 className="card-title">{item.name}</h2>
+                <p className="card-text">Price: {item.price}</p>
+                <p className="card-text">Store: {item.store}</p>
               </div>
             </a>
           ))}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 import 'rc-slider/assets/index.css';
-import Slider from 'rc-slider';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import SearchResult from './SearchResult';
@@ -11,7 +10,7 @@ import titleImage from './front.png';
 const Home = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial price range
+  // const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial price range
 
   const handleSearch = () => {
     if (searchQuery.trim() !== '') {
@@ -34,10 +33,10 @@ const Home = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handlePriceChange = (value) => {
-    console.log("Selected Price Range:", value);
-    setPriceRange(value);
-  };
+  // const handlePriceChange = (value) => {
+  //   console.log("Selected Price Range:", value);
+  //   setPriceRange(value);
+  // };
 
   // const handleSearchByPrice = () => {
 
@@ -112,7 +111,6 @@ const App = () => {
             <Route path="/" element={<Home />} />
             {/* <Route path="/categories" element={<Categories />} /> */}
             <Route path="/search-result/:query" element={<SearchResult />} />
-            {/* <Route path="/item/:id" element={<Item />} /> */}                   /*no apparent need*/
           </Routes>
         </main>
         <footer className="footer">

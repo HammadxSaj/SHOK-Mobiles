@@ -185,8 +185,7 @@
   top: 530px; /* Adjust the distance from the top */
   left: 65%; /* Adjust the distance from the left */
   transform: translateX(-50%); /* Center the slider horizontally */
-  z-index: 999; /* Ensure the slider is on top of other elements */
-}
+  z-index: 999; /* Ensure the slider is on top of other elements */}
 
 
 .rc-slider-track {
