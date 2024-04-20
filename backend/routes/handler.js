@@ -2,12 +2,12 @@ const express = require('express');
 const { exec } = require('child_process');
 const router = express.Router();
 const Product = require('../model/product-schema.js');
+const cron = require('node-cron');
 
-// let scrapedData = []; // Store multiple product data in an array
 
 function executePythonScript() {
   
-  exec('python Scrapers\\DarazScraper.py', (error, stdout, stderr) => {
+  exec('python Scrapers/DarazScraper.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);
       return;
@@ -19,7 +19,7 @@ function executePythonScript() {
     console.log(`stdout: ${stdout}`);
   });
 
-  exec('python Scrapers\\TelemartScraper.py', (error, stdout, stderr) => {
+  exec('python Scrapers/TelemartScraper.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);
       return;
@@ -31,7 +31,10 @@ function executePythonScript() {
     console.log(`stdout: ${stdout}`);
   });
 }
-executePythonScript();
+cron.schedule('00 0 * * *', () => {
+  executePythonScript();
+  console.log('Running a job at midnight');
+});
 
 router.post('/data', async(req, res) => {
 
@@ -64,38 +67,7 @@ router.post('/data', async(req, res) => {
   }
 });
 
-// router.get('/result', async(req, res) => {
-//   try{
-//     const products = await Product.find({});
-//     console.log('Products found from database:', products);
-//     res.status(200).json(products)
-//     console.log('Data sent to front end successfully')
-//   }catch(error){
-//     res.status(500).json({message: error.message})
-//     console.log('Data nooooooooot sent to front end successfully')
-//   }
-//   // res.json(scrapedData); // Return all scraped data as JSON
-// });
 
-// router.get('/result', async (req, res) => {
-//   const minPrice = parseInt(req.query.minPrice ?? 0);
-//   const maxPrice = parseInt(req.query.maxPrice ?? 100000);
-
-//   try {
-//     const products = await Product.find({
-//       price: { $gte: minPrice, $lte: maxPrice }
-//     });
-
-//     console.log('Products found from database:', products);
-//     console.log("Min Price:", minPrice);
-//     console.log("Max Price:", maxPrice);
-//     res.status(200).json(products);
-//     console.log('Data sent to front end successfully');
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//     console.log('Data not sent to front end successfully');
-//   }
-// });
 
 router.get('/result', async (req, res) => {
   const minPrice = parseInt(req.query.minPrice ?? 0);

@@ -39,16 +39,18 @@ def main():
         script_tag_lst = soup.find_all('script', type='application/ld+json')
         span_tag = soup.find('span', id='product-price-undefined')
         script_tag = script_tag_lst[2]
+        clean_script_tag = script_tag.get_text()
+        clean_script_tag = clean_script_tag.replace('\n', '').replace('\t', '').replace('\r', '')
         if span_tag:
             product_price = span_tag
         if script_tag:
-            script_content = script_tag.string
+            script_content = clean_script_tag
             
             if script_content:
                 json_data = json.loads(script_content)
                 
                 product_name = json_data.get('name')
-                product_price = json_data.get('offers', {}).get('price')
+                product_price = soup.find('meta', property='product:price:amount')['content']
                 product_image = json_data.get('image')
                 
                 if product_name:

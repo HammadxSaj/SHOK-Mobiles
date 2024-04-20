@@ -16,7 +16,7 @@ def generateList():
 
     a = driver.find_elements('css selector', 'a[id="id-a-link"]')
     lst.extend([a.get_attribute('href') for a in a])
-    for i in range(4):
+    for i in range(8):
         next_page = driver.find_element('css selector', 'li[title="Next Page"]')
         next_page.click()
         time.sleep(5)
