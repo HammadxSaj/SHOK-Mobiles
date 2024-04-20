@@ -7,7 +7,7 @@ const Product = require('../model/product-schema.js');
 
 function executePythonScript() {
   exec('python scrap.py');
-  exec('python Scrapers\\scraper.py', (error, stdout, stderr) => {
+  exec('python Scrapers\\TelemartScraper.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);
       return;
