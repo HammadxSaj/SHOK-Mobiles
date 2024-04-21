@@ -51,12 +51,13 @@ def main():
                 
                 product_name = json_data.get('name')
                 product_price = soup.find('meta', property='product:price:amount')['content']
-                product_image = json_data.get('image')
+                product_image = soup.find('img', class_='no-sirv-lazy-load')['src']
                 
                 if product_name:
                     if product_price:
                         # print("Product Price:", product_price)
                         # print("Product Name:", product_name)
+                        # print("Product Image:", product_image)
                         dataSend(product_name,product_price, product_image, url, "Ishopping")
                 else:
                     print("not found in JSON data.")

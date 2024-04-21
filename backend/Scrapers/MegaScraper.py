@@ -52,7 +52,7 @@ def main():
                 product_image = json_data.get('image')
                 
                 if product_name:
-                    if product_price:
+                    if product_price != "0":
                         # print("Product Price:", product_price)
                         # print("Product Name:", product_name)
                         # print("Product Image:", product_image)

@@ -55,7 +55,7 @@ function executePythonScript() {
 }
 cron.schedule('00 0 * * *', () => {
   executePythonScript();
-  console.log('Running a job at midnight');
+  console.log('Running scraper at midnight');
 });
 
 router.post('/data', async(req, res) => {
